@@ -9,17 +9,10 @@ import os
 import locale
 import meteo
 import blague
-import RecVoacale
+import cv2
+import RecVocale
 import RecFaciale
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
-
-################################
-#########INITIALISATION#########
-################################
-engine = pyttsx3.init()
-engine.setProperty("voice", "french")
-engine.setProperty('rate', 200)
-engine.setProperty('volume', 0.9)
 
 ################################
 ############VARIABLES###########
@@ -27,46 +20,35 @@ engine.setProperty('volume', 0.9)
 repeat = False
 
 ################################
-#######PRE-ENREGISTREMENT#######
+######DETECTION FACIALE#########
 ################################
-sentence = gTTS(text="Oui j'écoute?", lang='fr', slow=False)
-sentence.save("yes.mp3")
-sentence = gTTS(text="J'ai pas compris", lang='fr', slow=False)
-sentence.save("repeat.mp3")
-sentence = gTTS(text="Je peux pas répondre", lang='fr', slow=False)
-sentence.save("unknown.mp3")
-
-################################
-#########ANALYSE VOCALE#########
-################################
-def listen():
-    print("Ecoute")
-    r = sr.Recognizer()
-    speech = sr.Microphone(device_index=9)
-    with speech as source:
-        audio = r.adjust_for_ambient_noise(source)
-        audio = r.listen(source)
-    try:
-        print("Analyse")
-        text = r.recognize_google(audio, language = 'fr-FR')
-        return text
-    except sr.UnknownValueError:
-        return ""
-    except sr.RequestError as e:
-        os.system("mpg321 unknown.mp3")
-        return ""
+cap = cv2.VideoCapture(0)
+cap.set(3, 1280)
+cap.set(4, 720)
+classNames = []
+classFile = "coco.names"
+with open(classFile, "rt") as f:
+    classNames = f.read().rstrip("\n").split("\n")
+#print(classNames) Voir tour ce qu'il y a dans coco.names
+configPath = "ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt"
+weightsPath = "frozen_inference_graph.pb"
+net = cv2.dnn_DetectionModel(weightsPath,configPath) #Bounding : rectangle de délimitations
+net.setInputSize(320,320)
+net.setInputScale(1.0/ 127.5)
+net.setInputMean((127.5, 127.5, 127.5))
+net.setInputSwapRB(True)
 
 while true :
     
     ################################
     ########DETECTION VOCALE########
     ################################
-    while (listen().find("Google") == -1 and repeat == False):
+    while (RecVocale.listen().find("Google") == -1 and repeat == False):
         print(".")
     if repeat == False:
         os.system("mpg321 yes.mp3")
     repeat = False
-    text = listen()
+    text = RecVocale.listen()
     
     ################################
     ######APPEL DE FONCTIONS########
