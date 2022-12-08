@@ -19,25 +19,6 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 ################################
 repeat = False
 
-################################
-######DETECTION FACIALE#########
-################################
-cap = cv2.VideoCapture(0)
-cap.set(3, 1280)
-cap.set(4, 720)
-classNames = []
-classFile = "coco.names"
-with open(classFile, "rt") as f:
-    classNames = f.read().rstrip("\n").split("\n")
-#print(classNames) Voir tour ce qu'il y a dans coco.names
-configPath = "ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt"
-weightsPath = "frozen_inference_graph.pb"
-net = cv2.dnn_DetectionModel(weightsPath,configPath) #Bounding : rectangle de délimitations
-net.setInputSize(320,320)
-net.setInputScale(1.0/ 127.5)
-net.setInputMean((127.5, 127.5, 127.5))
-net.setInputSwapRB(True)
-
 while true :
     
     ################################
@@ -64,6 +45,8 @@ while true :
     RecVocale.blague()
     time.sleep(1)
     RecVocale.brumisateur()
+    time.sleep(1)
+    RecFaciale.RecObjet()
     time.sleep(1)
     
     ################################
