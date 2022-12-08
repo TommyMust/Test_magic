@@ -1,1 +1,3 @@
 import vocale.py
+import affichage.py
+import codecs 
