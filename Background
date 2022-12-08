@@ -1,6 +1,7 @@
-import vocale.py
-import affichage.py
-import codecs 
+import os
 
-# appelle fonction
-# utilise fonction
+appli = r"Path/Vocale.py"
+os.startfile(appli)
+
+appli = r"Path/Interface.py"
+os.startfile(appli)
