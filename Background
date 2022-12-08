@@ -3,5 +3,5 @@ import os
 appli = r"Path/Vocale.py"
 os.startfile(appli)
 
-appli = r"Path/Interface.py"
+appli = r"Path/Interface.html"
 os.startfile(appli)
