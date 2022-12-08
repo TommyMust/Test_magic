@@ -1,7 +1,0 @@
-import os
-
-appli = r"Path/Vocale.py"
-os.startfile(appli)
-
-appli = r"Path/Interface.html"
-os.startfile(appli)
