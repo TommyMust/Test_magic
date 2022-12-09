@@ -30,6 +30,12 @@ while true :
         os.system("mpg321 yes.mp3")
     repeat = False
     text = RecVocale.listen()
+    a = RecFaciale.Facialposition()
+    
+    if a > 0.8 :
+        moteur = 1 #bouge droite
+    elif a < 0.2 :
+        moteur = 2 #bouge gauche
     
     ################################
     ######APPEL DE FONCTIONS########
