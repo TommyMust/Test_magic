@@ -35,3 +35,19 @@ def RecObjet() :
                         cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0),thickness=2)
             cv2.imshow("Output",img)
             cv2.waitKey(1)
+            
+def Facialposition():
+    
+    success, img = cap.read()
+    imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    results = faceMesh.process(imgRGB)  # construit le maillage
+    if results.multi_face_landmarks:
+        for faceLms in results.multi_face_landmarks:  # pour chaque maillage (de chaque visage trouvé)
+            # Dessine le maillage sur le visage
+            mpDraw.draw_landmarks(img, faceLms, mpFaceMesh.FACEMESH_CONTOURS, drawSpec, drawSpec)
+            print(faceLms) 
+            x = faceLms.split(" ")
+            a = x[2]
+            b = float(a)
+            
+    return b
